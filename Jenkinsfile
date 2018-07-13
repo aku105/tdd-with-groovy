@@ -2,17 +2,17 @@ pipeline{
     agent any
     stages{
         stage('Test'){
-            tasks{
+            steps{
                 sh "./gradlew test"
             }
         }
         stage('CodeNarc'){
-            tasks{
+            steps{
                 sh "./gradlew codenarcMain codenarcTest"
             }
         }
         stage('Compile'){
-            tasks{
+            steps{
                 sh "./gradlew assemble"
             }
         }

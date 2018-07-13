@@ -1,6 +1,6 @@
 pipeline{
     agent any
-    stages{
+    stages {
         stage('Test'){
             steps{
                 sh "./gradlew test"
@@ -14,6 +14,13 @@ pipeline{
         stage('Compile'){
             steps{
                 sh "./gradlew assemble"
+            }
+        }
+    }
+    post {
+        stage("Archive Test results") {
+            steps{
+                junit 'build/test-results/**.*'
             }
         }
     }

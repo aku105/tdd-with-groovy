@@ -18,9 +18,11 @@ pipeline{
         }
     }
     post {
-        stage("Archive Test results") {
-            steps{
-                junit 'build/test-results/**.*'
+        always{
+            stage("Archive Test results") {
+                steps{
+                    junit 'build/test-results/**.*'
+                }
             }
         }
     }

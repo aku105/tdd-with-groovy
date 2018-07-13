@@ -1,25 +1,22 @@
 pipeline{
     agent any
     stages {
-        stage('Test'){
+        stage('Test and Lint'){
             steps{
-                sh "./gradlew test"
-            }
-        }
-        stage('CodeNarc'){
-            steps{
-                sh "./gradlew codenarcMain codenarcTest"
+                sh "./gradlew --no-daemon clean check"
+                stash name: 'testResults', includes: "build/test-results/**"
             }
         }
         stage('Compile'){
             steps{
-                sh "./gradlew assemble"
+                sh "./gradlew --no-daemon assemble"
             }
         }
     }
     post {
-        always{ 
-            junit 'build/test-results/**/Test*.*'
+        always{
+            unstash name: 'testResults'
+            junit 'build/test-results/test/**.*'
         }
     }
 }
